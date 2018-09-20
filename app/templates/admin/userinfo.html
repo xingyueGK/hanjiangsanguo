@@ -1,0 +1,108 @@
+{% extends "admin/base.html" %}
+{%block link%}
+<!-- DataTables -->
+<link rel="stylesheet" href="{{url_for('static',filename='admin/plugins/datatables/dataTables.bootstrap.css')}}">
+{%endblock%}
+{% block content %}
+<div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+        <h1>
+            用户信息
+            <small>advanced tables</small>
+        </h1>
+        <ol class="breadcrumb">
+            <li><a href="/admin"><i class="fa fa-dashboard"></i> Home</a></li>
+            <li><a href="data">Tables</a></li>
+            <li class="active">Data tables</li>
+        </ol>
+    </section>
+
+    <!-- Main content -->
+    <section class="content">
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="box">
+                    <div class="box-header">
+                        <h3 class="box-title">Data Table With Full Features</h3>
+                    </div>
+                    <!-- /.box-header -->
+                    <div class="box-body">
+                        <table id="example1" class="table table-bordered table-striped">
+                            <thead>
+                            <tr>
+                                <th>账号</th>
+                                <th>名字</th>
+                                <th>等级</th>
+                                <th>vip</th>
+                                <th>国家</th>
+                                <th>军令</th>
+                                <th>银币</th>
+                                <th>元宝</th>
+                                <th>黄宝石</th>
+                                <th>紫宝石</th>
+                                <th>声望</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+
+
+                            {% for k in info %}
+
+                            <tr>
+                                {% for i in k %}
+                                <td><a href="{{k[0]}}">{{ i }}</a></td>
+                                {% endfor %}
+                            </tr>
+
+                            {% endfor %}
+
+                            </tbody>
+                            <tfoot>
+                            <tr>
+                                <th>账号</th>
+                                <th>名字</th>
+                                <th>等级</th>
+                                <th>vip</th>
+                                <th>国家</th>
+                                <th>军令</th>
+                                <th>银币</th>
+                                <th>元宝</th>
+                                <th>黄宝石</th>
+                                <th>紫宝石</th>
+                                <th>声望</th>
+                            </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                    <!-- /.box-body -->
+                </div>
+                <!-- /.box -->
+            </div>
+            <!-- /.col -->
+        </div>
+        <!-- /.row -->
+    </section>
+    <!-- /.content -->
+</div>
+{% endblock %}
+
+{% block script %}
+<!-- DataTables -->
+<script src="{{url_for('static',filename='admin/plugins/datatables/jquery.dataTables.min.js')}}"></script>
+<script src="{{url_for('static',filename='admin/plugins/datatables/dataTables.bootstrap.min.js')}}"></script>
+<!-- page script -->
+<script>
+    $(function () {
+        $("#example1").DataTable();
+        $('#example2').DataTable({
+            "paging": true,
+            "lengthChange": false,
+            "searching": false,
+            "ordering": true,
+            "info": true,
+            "autoWidth": false
+        });
+    });
+</script>
+{%endblock%}

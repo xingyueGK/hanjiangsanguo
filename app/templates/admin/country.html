@@ -1,0 +1,82 @@
+{% extends 'admin/base.html' %}
+{% block content %}
+<div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+        <h1>
+            加入国家
+            <small>preview of simple tables</small>
+        </h1>
+        <ol class="breadcrumb">
+            <li><a href="#"><i class="fa fa-dashboard"></i>主页</a></li>
+            <li><a href="#">首选</a></li>
+            <li class="active">国家</li>
+        </ol>
+    </section>
+
+    <!-- Main content -->
+    <section class="content">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="box">
+                    <div class="box-header with-border">
+                        <h3 class="box-title">国家列表</h3>
+                    </div>
+                    <!-- /.box-header -->
+                    <div class="box-body">
+                        <table class="table table-bordered">
+                            <tr>
+                                <th style="width: 10px">#</th>
+                                <th>排名</th>
+                                <th>国号</th>
+                                <th>等级</th>
+                                <th>人数</th>
+                                <th>君主</th>
+                                <th>加入</th>
+                            </tr>
+                            {% for item in info.list %}
+                            <tr>
+                                <td>{{loop.index}}.</td>
+                                <td>{{item.rank}}</td>
+                                <td>{{item.name}}</td>
+                                <td>{{item.level}}</td>
+                                <td>{{item.member}}</td>
+                                <td>{{item.nickname}}</td>
+                                <td>
+                                    <button type="button" class="btn btn-info btn-flat"><a
+                                            href="{{url_for('admin.joincountryj',uid=item.uid)}}">申请</a></button>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </table>
+                    </div>
+                    <!-- /.box-body -->
+                    <div class="box-footer clearfix">
+                        <ul class="pagination pagination-sm no-margin pull-right">
+                            {% if datas.show_shouye_status==1%}
+                            <li class=''><a href='/admin/country/1'>首页</a></li>
+                            <li class=''><a href='/admin/country/{{datas.p-1}}'>上一页</a></li>
+                            {%endif%}
+
+                            {% for dic in datas.dic_list %}
+                            {% if dic==datas.p%}
+                            <li class="active"><a href="/admin/country/{{dic}}">{{dic}}</a></li>
+                            {%else%}
+                            <li><a href="/admin/country/{{dic}}">{{dic}}</a></li>
+                            {%endif%}
+                            {%endfor%}
+                            {% if datas.p < datas.total%}
+                            <li class=''><a href='/admin/country/{{datas.p+1}}'>下一页</a></li>
+                            <li class=''><a href='/admin/country/{{datas.total}}'>尾页</a></li>
+                            {%endif%}
+                            <li class=''><a href='/admin/country/{{datas.total}}'>共{{datas.total}}页</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- /.content -->
+</div>
+{%endblock %}
+

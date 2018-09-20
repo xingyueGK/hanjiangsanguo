@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="{{url_for('static',filename='admin/lib/jquery.js')}}"></script>
+    <script src="{{url_for('static',filename='admin/lib/run_prettify.js')}}"></script>
+    <script src="{{url_for('static',filename='admin/src/bootstrap-pagy.js')}}"></script>
+    <link rel="stylesheet" href="{{url_for('static',filename='admin/lib/bootstrap.css')}}" type="text/css"/>
+</head>
+<body>
+<div class="pagination">
+    <ul></ul>
+</div>
+<script type="text/javascript">
+    $(".pagination").pagy({
+        totalPages: 20,
+        currentPage: 1,
+        page: function (page) {
+            $("#current-page").text(page);
+        }
+    });
+</script>
+</body>
+</html>
