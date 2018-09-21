@@ -14,5 +14,6 @@ app.register_blueprint(base_blueprint)
 app.register_blueprint(admin_blueprint,url_prefix='/admin')
 
 @app.errorhandler(404)
-def page_not_found(e):
-    return render_template('admin/404.html'), 404
+def page_not_found(error):
+    message = error.description
+    return render_template('admin/404.html',**locals()), 404
