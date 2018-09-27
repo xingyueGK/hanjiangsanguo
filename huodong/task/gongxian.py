@@ -1,10 +1,5 @@
 #-*- coding:utf-8 -*-
-import threading
-import time
-
-from activ import  *
-from shujufenx import fuben
-
+import base
 
 """竞速步骤
 1、第一次扫荡攻击后16级失败
@@ -12,8 +7,7 @@ from shujufenx import fuben
 3、再次强化装备到26级后攻击超过30级失败
 4、领取蔡文姬武将，并出站，然后突飞够24级
 5、等级达到32级
-地图等级分布
-111 第八个图
+6、武将迅速升级至50，生成贡献号
 
 """
 
@@ -112,10 +106,10 @@ def act(username,passwd,addr):
         action.saodang(10)
 
     if action.level() < 150:  # 领取前60次奖励
-        #action.mainquest()
+        action.mainquest()
         #action.tujian()
         #action.soul()
-        #action.mapscene()  # 领取通关奖励
+        action.mapscene()  # 领取通关奖励
         #action.muster(level=90)
         #获取竞速元宝
         # for i in range(10, 180, 10):

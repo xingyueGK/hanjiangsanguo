@@ -1,0 +1,48 @@
+{%- extends "admin/base.html" %}
+{% block content %}
+<div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+        <h1>
+            国家贡献
+            <small>preview of simple tables</small>
+        </h1>
+        <ol class="breadcrumb">
+            <li><a href="#"><i class="fa fa-dashboard"></i>主页</a></li>
+            <li><a href="#">首选</a></li>
+            <li class="active">贡献</li>
+        </ol>
+    </section>
+    <!-- Main content -->
+    <section class="content">
+        <div class="row">
+            <h3>
+                <center><span class="label label-info">日志</span></center>
+            </h3>
+            <pre class="pre-scrollable">
+             <code>
+             <div id="output"></div>
+             </code>
+           </pre>
+        </div>
+    </section>
+    <!-- /.content -->
+</div>
+<script>
+    var source = new EventSource("/stream");
+    source.onmessage = function (event) {
+        document.getElementById("output").innerHTML += event.data + "<br/>"
+    }
+</script>
+<script type="text/javascript">
+    $().ready(function () {
+        var height = $(".pre-scrollable").outerHeight();
+        $(".pre-scrollable").scrollTop(4294967296);
+        $(".pre-scrollable").on("DOMNodeInserted", function () {
+            var height = $(this).outerHeight();
+            $(this).scrollTop(4294967296);
+        });
+    });
+</script>
+
+{%- endblock %}

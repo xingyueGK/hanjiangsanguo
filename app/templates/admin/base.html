@@ -32,7 +32,7 @@
 
     <header class="main-header">
         <!-- Logo -->
-        <a href="/admin" class="logo">
+        <a href="{{url_for('base.index')}}" class="logo">
             <!-- mini logo for sidebar mini 50x50 pixels -->
             <span class="logo-mini"><b>A</b>LT</span>
             <!-- logo for regular state and mobile devices -->
@@ -366,13 +366,13 @@
 
                     <ul class="treeview-menu">
                         <li>
-                            <a href="{{url_for('admin.country',id=1,userfile = userfile)}}">
+                            <a href="{{url_for('admin.country',id=1,filename = filename)}}">
                                 <i class="fa fa-th"></i> <span>加入国家</span>
                                 <small class="label pull-right bg-green">new</small>
                             </a>
                         </li>
                          <li>
-                            <a href="{{url_for('admin.conuntrydonate',id=1,userfile = userfile)}}">
+                            <a href="{{url_for('admin.conuntrydonate',id=1,filename = filename)}}">
                                 <i class="fa fa-th"></i> <span>国家贡献</span>
                                 <small class="label pull-right bg-green">new</small>
                             </a>

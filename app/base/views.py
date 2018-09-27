@@ -5,9 +5,7 @@ from flask import render_template, redirect, url_for, flash, current_app
 from app.base.forms import userForm, fileForm,addfileForm
 
 from werkzeug import secure_filename
-
-from huodong.activ import activity, userinfo
-from huodong.userfile import userList
+from huodong.tools.userfile import userList
 import os
 import redis
 
