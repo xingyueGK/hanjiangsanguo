@@ -3,7 +3,7 @@
 from . import admin
 from flask import render_template, redirect, url_for, flash, current_app,request,abort,session
 
-from forms import countryDoneForm
+from forms import countryDoneForm,overseaForm,refreshOverseaForm
 from functools import  wraps
 from ast import literal_eval
 from huodong.task.base import  SaoDangFb
@@ -78,9 +78,7 @@ def get_page(total,p):
 @admin.route('country/<int:id>',methods=['GET','POST'])
 @valades
 def country(id=1):
-    filename = session['filename']
-    userpath = current_app.config['userpath']
-    user = os.path.join(userpath,filename)
+    user = BaseFactory().user
     with open(user,'r') as f:
         context = f.readline()
         name = context.split()[0]
@@ -110,20 +108,18 @@ def country(id=1):
 #加入指定国家
 @admin.route('country_join/<uid>')
 def joincountryj(uid=None):
-    filename = session['filename']
-    userpath = current_app.config['userpath']
-    user = os.path.join(userpath,filename)
+    user = BaseFactory().user
     with open(user,'r') as f:
         return uid
 
 @admin.route('conuntrydonate/',methods=['GET','POST'])
 def conuntrydonate():
-
+    user = BaseFactory().user
     form = countryDoneForm()
     if form.validate_on_submit():
         flag = form.language.data
         if flag == 'Flase':
-            print 'jifaef'
+            print user
         elif flag == 'True':
             print 'rfje'
     print form.language.errors
@@ -135,6 +131,23 @@ def action():
     pass
 # 所有任务
 
-@admin.route('log')
-def log():
-    return render_template('admin/log.html',**locals())
+@admin.route('oversea/rob',methods=['GET','POST'])
+def rob():
+    form = overseaForm()
+    reform = refreshOverseaForm()
+    if form.validate_on_submit():
+        country_list = form.country.data.split()
+        print country_list
+    return render_template('admin/oversea.html',**locals())
+@admin.route('oversea/refresh',methods=['GET','POST'])
+def refresh():
+    form = overseaForm()
+    reform = refreshOverseaForm()
+    if reform.validate_on_submit():
+        account = reform.account.data
+        area = reform.area.data
+        numbers = reform.numbers.data
+        overseatype = reform.overseatype.data
+        print account,area,numbers,overseatype
+
+    return render_template('admin/oversea.html',**locals())

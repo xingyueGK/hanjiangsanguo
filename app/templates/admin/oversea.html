@@ -1,0 +1,101 @@
+{% extends 'admin/base.html' %}
+{% block content %}
+<div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+        <h1>
+            节日海运
+            <small>preview of simple tables</small>
+        </h1>
+        <ol class="breadcrumb">
+            <li><a href="#"><i class="fa fa-dashboard"></i>主页</a></li>
+            <li><a href="#">首选</a></li>
+            <li class="active">节日海运</li>
+        </ol>
+    </section>
+    <!-- Main content -->
+    <section class="content">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="box">
+                    <div class="box-header with-border">
+                        <h3 class="box-title">海运</h3>
+                    </div>
+                    <div class="box box-primary">
+
+                        <!-- /.box-header -->
+                        <!-- form start -->
+                        <form role="form" action="{{url_for('admin.rob')}}" method="POST">
+                            <div class="box-body">
+                                <div class="checkbox">
+                                    {{ form.country.label}}{{ form.country}}
+                                </div>
+                                {% for error in form.country.errors %}
+                                <label class="control-label" for="inputError"><i class="fa fa-times-circle-o"></i>{{
+                                    error }}
+                                </label>
+                                {% endfor %}
+                                <div class="box-footer">
+                                    {{ form.commit }}
+                                </div>
+                            </div>
+                            {{ form.csrf_token }}
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="box">
+                    <div class="box-header with-border">
+                        <h3 class="box-title">海运</h3>
+                    </div>
+                    <div class="box box-primary">
+
+                        <!-- /.box-header -->
+                        <!-- form start -->
+                        <form role="form" action="{{url_for('admin.refresh')}}" method="POST">
+                            <div class="box-body">
+                               {{ reform.account.label}}{{ reform.account}}
+                                {% for error in reform.account.errors %}
+                                <div class="form-group has-warning">
+                                    <label class="control-label" for="inputError"><i class="fa fa-bell-o"></i>{{error }}
+                                    </label>
+                                </div>
+                                {% endfor %}
+                                {{ reform.area.label}}{{ reform.area}}
+                                {% for error in reform.area.errors %}
+                                <div class="form-group has-warning">
+                                    <label class="control-label" for="inputError"><i class="fa fa-bell-o"></i>{{error }}
+                                    </label>
+                                </div>
+                                {% endfor %}
+                                {{ reform.numbers.label}}{{ reform.numbers}}
+                                {% for error in reform.numbers.errors %}
+                                <div class="form-group has-warning">
+                                    <label class="control-label" for="inputError"><i class="fa fa-bell-o"></i>{{error }}
+                                    </label>
+                                </div>
+                                {% endfor %}
+                                {{ reform.overseatype.label}}{{ reform.overseatype}}
+                                {% for error in reform.overseatype.errors %}
+                                <div class="form-group has-warning">
+                                    <label class="control-label" for="inputError"><i class="fa fa-bell-o"></i>{{error }}
+                                    </label>
+                                </div>
+                                {% endfor %}
+                                <div class="box-footer">
+                                    {{ reform.commit }}
+                                </div>
+                            </div>
+                            {{ form.csrf_token }}
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- /.content -->
+</div>
+{%endblock %}

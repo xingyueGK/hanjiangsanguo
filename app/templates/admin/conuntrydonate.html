@@ -35,6 +35,15 @@
                                 <span style="color: red;">{{ error }}</span>
                             {% endfor %}
                             </div>
+                                <div class="box-body">
+                                <div class="checkbox">
+                                    {{ form.destroy.label}}
+                                    {{ form.destroy}}
+                                </div>
+                                {% for error in form.destroy.errors %}
+                                <span style="color: red;">{{ error }}</span>
+                            {% endfor %}
+                            </div>
                             <!-- /.box-body -->
 
                             <div class="box-footer">
