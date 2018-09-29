@@ -26,6 +26,7 @@
                     <div class="box-header">
                         <h3 class="box-title">Data Table With Full Features</h3>
                     </div>
+                    <button id="btn" class="btn btn-primary">导出信息</button>
                     <!-- /.box-header -->
                     <div class="box-body">
                         <table id="example1" class="table table-bordered table-striped">
@@ -55,7 +56,7 @@
                             {% endfor %}
                             </tbody>
                             <tfoot>
-                            <tr>
+                            <tr class="noExl">
                                 <th>账号</th>
                                 <th>名字</th>
                                 <th>等级</th>
@@ -87,6 +88,9 @@
 <!-- DataTables -->
 <script src="{{url_for('static',filename='admin/plugins/datatables/jquery.dataTables.min.js')}}"></script>
 <script src="{{url_for('static',filename='admin/plugins/datatables/dataTables.bootstrap.min.js')}}"></script>
+
+
+<script type="text/javascript" src="{{url_for('static',filename='admin/bootstrap/js/jquery.table2excel.js')}}"></script>
 <!-- page script -->
 <script>
     $(function () {
@@ -101,4 +105,19 @@
         });
     });
 </script>
+<script>
+    $(function () {
+        $("#btn").click(function () {
+            $("#example1").table2excel({
+                exclude: ".noExl",
+                name: "Excel Document Name",
+                filename: "角色信息",
+                exclude_img: true,
+                exclude_links: true,
+                exclude_inputs: true
+            });
+        });
+    });
+</script>
+
 {%endblock%}
