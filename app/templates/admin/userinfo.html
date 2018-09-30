@@ -46,13 +46,14 @@
                             </tr>
                             </thead>
                             <tbody>
-
                             {% for k in info %}
+                            {% if k  %}
                             <tr>
                                 {% for i in k %}
                                 <td><a href="{{k[0]}}">{{ i }}</a></td>
                                 {% endfor %}
                             </tr>
+                            {% endif %}
                             {% endfor %}
                             </tbody>
                             <tfoot>

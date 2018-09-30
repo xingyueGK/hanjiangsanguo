@@ -9,3 +9,4 @@ from flask import Blueprint
 admin = Blueprint("admin",__name__)
 admin.config = {}
 from app.admin import views
+from . import events

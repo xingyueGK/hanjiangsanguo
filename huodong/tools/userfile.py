@@ -17,5 +17,4 @@ def userList():
         count = len(open(filepath, 'r').readlines())
         a= [file,count]
         files.append(a)
-    print files
     return files

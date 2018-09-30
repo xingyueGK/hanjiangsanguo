@@ -8,10 +8,13 @@ from functools import  wraps
 from ast import literal_eval
 from huodong.task.base import  SaoDangFb
 from huodong.tools.mult import  main
+from huodong.cmds import  cmds
 from huodong.userinfo.userinfo import  userinfo
 from huodong.tools.userfile import userList
+from huodong.activity.activ import *
 import json,os
 import redis
+
 
 pool = redis.ConnectionPool(host='localhost', port=6379, db=0)
 _redis = redis.StrictRedis(connection_pool=pool)
@@ -25,11 +28,14 @@ class BaseFactory(object):
 def valades(func):
     @wraps(func)
     def validatorFile(*args,**kwargs):
-        arg = session['filename']
-        if not arg:
-            abort(404)
-        rest = func(*args, **kwargs)
-        return rest
+        try:
+            arg = session['filename']
+            if not arg:
+                abort(404, "账号不存在,指定账号后重试")
+            rest = func(*args, **kwargs)
+            return rest
+        except KeyError as e:
+            abort(404, "账号不存在,指定账号后重试")
     return validatorFile
 
 
@@ -37,6 +43,7 @@ def valades(func):
 def index():
     filename = request.args.get('filename')
     if filename:
+        session.permanent = True
         session['filename'] = filename
     else:
         abort(404,"账号不存在,指定账号后重试")
@@ -44,7 +51,7 @@ def index():
         info = _redis.lrange(filename,0,_redis.llen(filename))
         info = literal_eval(info[0])
     else:
-        info = main(filename,userinfo)
+        info = main(userinfo,filename)
         _redis.lpush(filename,info)
         _redis.expire(filename,3600)
     user = userList()
@@ -131,13 +138,18 @@ def action():
     pass
 # 所有任务
 
+#节日海运打劫
 @admin.route('oversea/rob',methods=['GET','POST'])
+@valades
 def rob():
+    b = BaseFactory()
+    user = b.user
     form = overseaForm()
     reform = refreshOverseaForm()
     if form.validate_on_submit():
         country_list = form.country.data.split()
-        print country_list
+        main(dajie,b.filename,country_list)
+        return render_template('admin/oversea.html', **locals())
     return render_template('admin/oversea.html',**locals())
 @admin.route('oversea/refresh',methods=['GET','POST'])
 def refresh():
@@ -147,7 +159,14 @@ def refresh():
         account = reform.account.data
         area = reform.area.data
         numbers = reform.numbers.data
-        overseatype = reform.overseatype.data
-        print account,area,numbers,overseatype
-
+        flag =  True and reform.overseatype.data.lower() == 'true' or False
+        main(userinfo,account,area=area,numbers=numbers,flag=flag)
     return render_template('admin/oversea.html',**locals())
+
+@admin.route('oversea/logs',methods=['GET','POST'])
+def logs():
+    form = overseaForm()
+    reform = refreshOverseaForm()
+    return render_template("admin/sockio.html",**locals())
+
+

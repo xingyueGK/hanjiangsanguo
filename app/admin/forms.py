@@ -30,7 +30,7 @@ class countryDoneForm(FlaskForm):
     destroy = RadioField(
         u'贡献完成后退出国家',
         choices=[("Flase", '否'), ("True",'是'),],
-        default='Flase',
+        default='True',
         validators=[DataRequired(message='没有输入')]
     )
 

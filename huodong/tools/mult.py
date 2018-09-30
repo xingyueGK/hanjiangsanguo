@@ -18,13 +18,14 @@ class MyThread(threading.Thread):
         super(MyThread, self).__init__()
         self.func = func
         self.arg = args
-
     def run(self):
-        self.result = self.func(*self.arg)
-
+        try:
+            self.result = self.func(*self.arg)
+        except:
+            self.result = [self.arg]
     def get_result(self):
         return self.result
-def main(filename,func):
+def main(func,filename,*args,**kwargs):
     thread = []
     result = []
     file = os.path.join(userpath,filename)
@@ -38,7 +39,7 @@ def main(filename,func):
                     addr = i.split()[2]
                 except:
                     addr = 149
-                t1 = MyThread(func, args=(name, passwd, addr))
+                t1 = MyThread(func, args=(name, passwd, addr,args,kwargs))
                 thread.append(t1)
     for t in thread:
         t.start()
