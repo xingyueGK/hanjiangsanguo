@@ -1,9 +1,28 @@
 # -*- coding:utf-8 -*-
 from flask_wtf import FlaskForm
 from huodong.tools.userfile import userList
-from wtforms import StringField, TextAreaField, SubmitField, FileField, RadioField,IntegerField,SelectField
+from wtforms import BooleanField,StringField, TextAreaField, SubmitField, FileField, RadioField,IntegerField,SelectField,SubmitField
 
-from wtforms.validators import DataRequired, InputRequired, Regexp, ValidationError,DataRequired
+from wtforms.validators import  InputRequired, Regexp, ValidationError,DataRequired
+from wtforms.widgets import Input
+
+class ButtonInput(Input):
+    """
+    用于显示 input type='button' 式按钮的部件(widget)
+    """
+    input_type = 'button'
+
+    def __call__(self, field, **kwargs):
+        kwargs.setdefault('value', field.label.text)
+        return super(ButtonInput, self).__call__(field, **kwargs)
+
+
+class ButtonInputField(BooleanField):
+    '''
+    input type='button'式按钮
+    '''
+    widget = ButtonInput()
+
 
 class userForm(FlaskForm):
     text = TextAreaField(
@@ -42,7 +61,6 @@ class countryDoneForm(FlaskForm):
     )
 
 class overseaForm(FlaskForm):
-
     country = StringField(
         label = u'需要打劫的国家',
         validators=[DataRequired(message='没有输入')],
@@ -52,10 +70,13 @@ class overseaForm(FlaskForm):
             "placeholder": "国家1   国家2 （需要打劫的国家 ）",
         }
     )
-    commit = SubmitField(
+    commit = ButtonInputField(
         label='开始打劫',
+
         render_kw={
-            "class": "btn btn-primary"
+            "class": "btn btn-primary",
+            "id": "roboversea",
+            "onclick" : "login()",
         }
     )
 class refreshOverseaForm(FlaskForm):
@@ -101,3 +122,8 @@ class refreshOverseaForm(FlaskForm):
             "class": "btn btn-primary"
         }
     )
+class LoginForm(FlaskForm):
+    """Accepts a nickname and a room."""
+    name = StringField('Name', validators=[DataRequired()])
+    room = StringField('Room', validators=[DataRequired()])
+    submit = SubmitField('Enter Chatroom')

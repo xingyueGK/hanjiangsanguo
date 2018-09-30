@@ -5,7 +5,7 @@
 # @File    : roboversea.py
 
 #节日海运打劫
-from task.base import SaoDangFb
+from huodong.task.base import SaoDangFb
 import time, threading
 import os, json
 

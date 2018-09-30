@@ -1,29 +1,23 @@
-{% macro dump_users(url,lines) -%}
+{% macro dump_users() -%}
 <div class="row">
     <h3>
         <center><span class="label label-info">日志</span></center>
     </h3>
     <pre class="pre-scrollable">
         <code>
-            <div id="output"></div>
-                {{lines }}
-
+            <textarea id="chat" cols="80" rows="20"></textarea><br><br>
         </code>
     </pre>
 </div>
-<script>
-    var source = new EventSource("{{url}}");
-    source.onmessage = function (event) {
-        document.getElementById("output").innerHTML += event.data + "<br/>"
-    }
-</script>
-<script type="text/javascript">
-    $().ready(function () {
-        var height = $(".pre-scrollable").outerHeight();
-        $(".pre-scrollable").scrollTop(4294967296);
-        $(".pre-scrollable").on("DOMNodeInserted", function () {
-            var height = $(this).outerHeight();
-            $(this).scrollTop(4294967296);
+<script type="text/javascript" src="//code.jquery.com/jquery-1.4.2.min.js"></script>
+<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/socket.io/1.3.6/socket.io.min.js"></script>
+<script type="text/javascript" charset="utf-8">
+    var socket;
+    $(document).ready(function () {
+        socket = io.connect('http://' + document.domain + ':' + location.port + '/chat');
+        socket.on('message', function (data) {
+            $('#chat').val($('#chat').val() + data.msg + '\n');
+            $('#chat').scrollTop($('#chat')[0].scrollHeight);
         });
     });
 </script>

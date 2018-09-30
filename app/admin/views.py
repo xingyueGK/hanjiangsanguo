@@ -15,6 +15,7 @@ from huodong.activity.activ import *
 import json,os
 import redis
 
+from .. import socketio
 
 pool = redis.ConnectionPool(host='localhost', port=6379, db=0)
 _redis = redis.StrictRedis(connection_pool=pool)
@@ -146,10 +147,16 @@ def rob():
     user = b.user
     form = overseaForm()
     reform = refreshOverseaForm()
+    print request.form['data']
     if form.validate_on_submit():
+        print form.validate_on_submit()
         country_list = form.country.data.split()
-        main(dajie,b.filename,country_list)
-        return render_template('admin/oversea.html', **locals())
+        print country_list
+        # for i in range(20):
+        #     socketio.emit('message', {'msg':country_list}, namespace='/chat')
+        #     time.sleep(0.2)
+        #main(dajie,b.filename,country_list)
+        #return render_template('admin/oversea.html', **locals())
     return render_template('admin/oversea.html',**locals())
 @admin.route('oversea/refresh',methods=['GET','POST'])
 def refresh():
@@ -167,6 +174,8 @@ def refresh():
 def logs():
     form = overseaForm()
     reform = refreshOverseaForm()
+    name = 'roboversea'
+    room = 'ceshiRome'
     return render_template("admin/sockio.html",**locals())
 
 
