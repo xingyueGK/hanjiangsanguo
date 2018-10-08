@@ -687,6 +687,7 @@ class task(SaoDangFb):
             print e
 
 
+
 def run(user, apass, addr):
     action = task(user, apass, addr)
     activity = action.get_act()

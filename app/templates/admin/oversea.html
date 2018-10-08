@@ -131,12 +131,11 @@
                 processData:false,
                 contentType:false,
                 success:function(data){
-                    window.clearInterval(timer);
                     console.log("over..");
                 },
                 error:function(e){
-                    alert("错误！！");
-                    window.clearInterval(timer);
+                    alert("必须输入！！");
+
                 }
             });
         }

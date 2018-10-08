@@ -20,12 +20,6 @@ from .. import socketio
 pool = redis.ConnectionPool(host='localhost', port=6379, db=0)
 _redis = redis.StrictRedis(connection_pool=pool)
 
-class BaseFactory(object):
-    def __init__(self):
-        self.filename = session['filename']
-        self.userpath = current_app.config['userpath']
-        self.user = os.path.join(self.userpath,self.filename)
-#必须有账号
 def valades(func):
     @wraps(func)
     def validatorFile(*args,**kwargs):
@@ -38,6 +32,16 @@ def valades(func):
         except KeyError as e:
             abort(404, "账号不存在,指定账号后重试")
     return validatorFile
+
+
+class BaseFactory(object):
+    @valades
+    def __init__(self):
+        self.filename = session['filename']
+        self.userpath = current_app.config['userpath']
+        self.user = os.path.join(self.userpath,self.filename)
+#必须有账号
+
 
 
 @admin.route('/')
@@ -141,13 +145,12 @@ def action():
 
 #节日海运打劫
 @admin.route('oversea/rob',methods=['GET','POST'])
-@valades
+#@valades
 def rob():
     b = BaseFactory()
     user = b.user
     form = overseaForm()
     reform = refreshOverseaForm()
-    print request.form['data']
     if form.validate_on_submit():
         print form.validate_on_submit()
         country_list = form.country.data.split()
@@ -155,9 +158,10 @@ def rob():
         # for i in range(20):
         #     socketio.emit('message', {'msg':country_list}, namespace='/chat')
         #     time.sleep(0.2)
-        #main(dajie,b.filename,country_list)
-        #return render_template('admin/oversea.html', **locals())
+        main(dajie,b.filename,country_list)
+        # return render_template('admin/oversea.html', **locals())
     return render_template('admin/oversea.html',**locals())
+
 @admin.route('oversea/refresh',methods=['GET','POST'])
 def refresh():
     form = overseaForm()
@@ -167,15 +171,26 @@ def refresh():
         area = reform.area.data
         numbers = reform.numbers.data
         flag =  True and reform.overseatype.data.lower() == 'true' or False
-        main(userinfo,account,area=area,numbers=numbers,flag=flag)
+        threading.Thread(target=main,args=(userinfo,account),kwargs={"area":area,"numbers":numbers,"flag":flag}).start()
+        threading.Thread(target=sendMsg).start()
+        return render_template('admin/oversea.html', **locals())
     return render_template('admin/oversea.html',**locals())
 
-@admin.route('oversea/logs',methods=['GET','POST'])
-def logs():
+
+@admin.route('logs/<type>')
+def logs(type):
     form = overseaForm()
     reform = refreshOverseaForm()
-    name = 'roboversea'
-    room = 'ceshiRome'
+    threading.Thread(target=sendMsg).start()
     return render_template("admin/sockio.html",**locals())
 
 
+def sendMsg():
+    name = 'roboversea'
+    room = 'ceshiRome'
+    ps = _redis.pubsub()
+    ps.subscribe(name)  # 从liao订阅消息
+    for item in ps.listen():  # 监听状态：有消息发布了就拿过来
+        if item['type'] == 'message':
+            msg= item['data']
+            socketio.emit('message', {'msg': msg}, namespace='/chat')

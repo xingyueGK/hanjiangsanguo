@@ -70,13 +70,12 @@ class overseaForm(FlaskForm):
             "placeholder": "国家1   国家2 （需要打劫的国家 ）",
         }
     )
-    commit = ButtonInputField(
+    commit = SubmitField(
         label='开始打劫',
-
         render_kw={
             "class": "btn btn-primary",
-            "id": "roboversea",
-            "onclick" : "login()",
+            # "id": "roboversea",
+            # "onclick" : "login()",
         }
     )
 class refreshOverseaForm(FlaskForm):
