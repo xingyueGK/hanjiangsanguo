@@ -171,8 +171,8 @@ def refresh():
         area = reform.area.data
         numbers = reform.numbers.data
         flag =  True and reform.overseatype.data.lower() == 'true' or False
-        threading.Thread(target=main,args=(userinfo,account),kwargs={"area":area,"numbers":numbers,"flag":flag}).start()
-        threading.Thread(target=sendMsg).start()
+        # threading.Thread(target=main,args=(userinfo,account),kwargs={"area":area,"numbers":numbers,"flag":flag}).start()
+        # threading.Thread(target=sendMsg).start()
         return render_template('admin/oversea.html', **locals())
     return render_template('admin/oversea.html',**locals())
 
