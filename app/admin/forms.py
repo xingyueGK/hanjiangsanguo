@@ -74,15 +74,19 @@ class overseaForm(FlaskForm):
         label='开始打劫',
         render_kw={
             "class": "btn btn-primary",
-            # "id": "roboversea",
+            "id": "startroboversea",
             # "onclick" : "login()",
         }
     )
 class refreshOverseaForm(FlaskForm):
-    user = userList()
+    #时实同步更新
+    def __init__(self, *args, **kwargs):
+        super(refreshOverseaForm, self).__init__(*args, **kwargs)
+        self.account.choices = [(item[0],item[0]) for item in userList()]
+
     account = SelectField(
         label = u'选择刷船账号',
-        choices = [(item[0],item[0]) for item in user ],
+        # choices = [(item[0],item[0]) for item in user ],
         validators=[DataRequired(message='没有输入')],
         render_kw = {
             "class":"form-control",
@@ -118,7 +122,8 @@ class refreshOverseaForm(FlaskForm):
     commit = SubmitField(
         label='开始刷船',
         render_kw={
-            "class": "btn btn-primary"
+            "class": "btn btn-primary",
+            "id":"startf"
         }
     )
 class LoginForm(FlaskForm):
