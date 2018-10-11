@@ -529,11 +529,6 @@ class task(SaoDangFb):
         except Exception as e:
             print e
 
-    def get_act(self):#角色信息
-        print '角色信息'
-        act_info = self.action(c='member', m='index')
-        return act_info
-
     def gongxian(self):  # 国家贡献
         print '国家贡献'
         try:

@@ -7,12 +7,14 @@ import os
 from tools.mult import main
 from activity.activ import  *
 
-curpath = os.path.dirname(os.path.abspath(__file__))
+#后台执行命令
 
 def cmds(func,filename,*args,**kwargs):
     parm = ''
     for k,v in kwargs.items():
         parm += '-{k} {v} '.format(k=k,v=v)
-    cmd = "python {hjsg} -func {func} -filename {filename} {parm}" .format(hjsg=hjsg,func=func,filename=filename,parm=parm)
+    cmd = "python run.py  {filename} {func} a {parm}" .format(func=func,filename=filename,parm=parm)
+    print cmd
     os.system(cmd)
 
+cmds('dajie','fe')
