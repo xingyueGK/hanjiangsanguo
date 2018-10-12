@@ -4,15 +4,12 @@
 # @Author  : xingyue
 #命令入口文件，后面所有新加模块通过此命令行调用
 
-#from huodong.task.base import SaoDangFb
+from tools.mult import main
+from activity.activ import  dajie as rob
 import os
 #当前文件路径
-curpath = os.path.dirname(os.path.abspath(__file__))
 import click
 
-class userAbsPathFile(object):
-    def __init__(self,name=None):
-        self.name = os.path.join(curpath,name)
 
 
 @click.group()
@@ -20,14 +17,15 @@ class userAbsPathFile(object):
 @click.pass_context
 def hjsg(ctx,file):
     """接受函数"""
-    ctx.obj['file'] = os.path.join(curpath,file)
+    ctx.obj['file'] = file
 
 
 @hjsg.command()
-@click.argument('src')
+@click.argument('countrylist',nargs = -1)
 @click.pass_context
-def dajie(ctx,src):
-    print ctx.obj['file'],src
+def dajie(ctx,countrylist):
+    file = ctx.obj['file']
+    main(rob,file,countrylist)
 
 
 if __name__ == "__main__":

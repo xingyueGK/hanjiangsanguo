@@ -33,7 +33,6 @@ def valades(func):
             abort(404, "账号不存在,指定账号后重试")
     return validatorFile
 
-
 class BaseFactory(object):
     @valades
     def __init__(self):
@@ -148,18 +147,17 @@ def action():
 #@valades
 def rob():
     b = BaseFactory()
-    user = b.user
+    user = b.user #角色账号
     form = overseaForm()
     reform = refreshOverseaForm()
     if form.validate_on_submit():
-        print form.validate_on_submit()
         country_list = form.country.data.split()
+        #threading.Thread(target=main,args=(dajie,b.filename,country_list)).start()
         print country_list
-        # for i in range(20):
-        #     socketio.emit('message', {'msg':country_list}, namespace='/chat')
-        #     time.sleep(0.2)
-        main(dajie,b.filename,country_list)
-        # return render_template('admin/oversea.html', **locals())
+        rest =cmds('dajie',user,*country_list)
+        rest.read()
+        threading.Thread(target=sendMsg,args=('robmsg',)).start()
+        return render_template('admin/oversea.html', **locals())
     return render_template('admin/oversea.html',**locals())
 
 @admin.route('oversea/refresh',methods=['GET','POST'])
@@ -181,16 +179,21 @@ def refresh():
 def logs(type):
     form = overseaForm()
     reform = refreshOverseaForm()
-    threading.Thread(target=sendMsg).start()
+    threading.Thread(target=sendMsg,args=(type,)).start()
     return render_template("admin/sockio.html",**locals())
 
+@admin.route('web')
+def web():
+    return render_template("web/index.html")
 
-def sendMsg():
+
+def sendMsg(mgs):
     name = 'roboversea'
     room = 'ceshiRome'
     ps = _redis.pubsub()
-    ps.subscribe(name)  # 从liao订阅消息
+    ps.subscribe(name)  # 从订阅消息
     for item in ps.listen():  # 监听状态：有消息发布了就拿过来
         if item['type'] == 'message':
             msg= item['data']
-            socketio.emit('message', {'msg': msg}, namespace='/chat')
+            socketio.emit(mgs, {'msg': msg}, namespace='/chat')
+

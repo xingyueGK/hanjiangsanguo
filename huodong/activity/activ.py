@@ -5,9 +5,9 @@
 # @File    : roboversea.py
 
 #节日海运打劫
-from huodong.task.base import SaoDangFb
+from task.base import SaoDangFb
 import time, threading
-import os, json
+import json
 
 from Queue import  Queue
 
@@ -58,7 +58,10 @@ class task(SaoDangFb):
             except Exception as e:
                 print e
 
-def dajie(user,apass,addr,countrylist,*args,**kwargs):
+def dajie(user,apass,addr,*args,**kwargs):
+    print 'dajife,',user,apass,addr,args,kwargs
+    print 'dajiezhelissssssssssssssss'
+    countrylist = args[0]
     action = task(user,apass,addr)
     # action.rob(['体检了', '8523', '英雄', '是你学姐', '杰克傻bi','杰克吃翔'], user)
     action.rob(countrylist, user)
