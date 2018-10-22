@@ -13,7 +13,7 @@ def create_app(debug=False):
 
     import os
     app = Flask(__name__)
-    app.debug = True
+    app.debug = debug
     app.config['SECRET_KEY'] = '3595e80829804bcaa590c745aef87379'
     app.config['userpath'] =  os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))),'users')
     app.register_blueprint(base_blueprint)

@@ -8,6 +8,7 @@ from functools import  wraps
 from ast import literal_eval
 from huodong.task.base import  SaoDangFb
 from huodong.tools.mult import  main
+from huodong.tools.position import  position
 from huodong.cmds import  cmds
 from huodong.userinfo.userinfo import  userinfo
 from huodong.tools.userfile import userList
@@ -135,6 +136,28 @@ def conuntrydonate():
             print 'rfje'
     print form.language.errors
     return render_template('admin/conuntrydonate.html',**locals())
+
+@admin.route('/audit',methods=['POST','GET'])
+def audit():
+    action = SaoDangFb('pock520','5553230',149)
+    info = action.action(c='country',m='get_member_list')
+    country = info['country']
+    audit_list = action.action(c='country',m='get_audit_list')['list']
+    positions = position
+    if request.method == 'POST':
+        if request.form['submit'] == '同意':
+            uids =  request.values.getlist("choice")
+            for uid in uids:
+                action.action(c='country', m='audit',uid =uid,type=1)
+            return render_template('admin/audit.html', **locals())
+        elif request.form['submit'] == '忽略':
+             uids =  request.values.getlist("choice")
+             for uid in uids:
+                 action.action(c='country', m='audit',uid =uid,type=2)
+             return render_template('admin/audit.html', **locals())
+    return render_template('admin/audit.html',**locals())
+
+
 
 
 @admin.route('/action')
