@@ -1,10 +1,10 @@
 var isdebug = false;
 var islocal = false;
 var isPhonegap = typeof cordova != "undefined";
-var staticUrl = "http://img2.hanjiangsanguo.com/h5cdn/20151225160/static/";
+var staticUrl = "http://img2.hanjiangsanguo.com/h5cdn/20151225169/static/";
 var localJS = "http://127.0.0.1:5000/static/web/";
 var UCAPI = "http://uc.game.hanjiangsanguo.com/index.php?";
-var client_version = 20151225160;
+var client_version = 20151225169;
 var local_version = 0;
 var server_version = 0;
 var appLanguage = "zh-cn";
@@ -22,8 +22,9 @@ if (URLHASH.indexOf("temptoken") == -1) {
     window.location.hash = ""
 }
 if (Platform.id == "pc") {
+
     Platform["payurl"] = "http://hjsg.zhanyougame.com/index.php?c=pay";
-    Platform["loginurl"] = "http://game.hjsg.zhanyougame.com/index.html";
+    Platform["loginurl"] = "http://127.0.0.1:5000/admin/web";
     if (console) {
         console.log = function() {}
     }
@@ -32,7 +33,7 @@ if (Platform.id == "pc") {
         Platform["payurl"] = "http://m.hanjiangsanguo.com/index.php?c=website&m=pay"
     }
 }
-var isIPhone5 = "devicePixelRatio" in window && window.devicePixelRatio == 2 && window.screen.height == 568;
+var isIPhone5 = "devicePixelRatio"in window && window.devicePixelRatio == 2 && window.screen.height == 568;
 if (isIPhone5) {
     $("body").addClass("iPhone5")
 }
@@ -43,21 +44,15 @@ if (/OS 6_\d(_\d)? like Mac OS X/i.test(navigator.userAgent) && /(iPhone|iPod)/i
     supportFullScreen = false
 }
 if (typeof cordova == "undefined" && window.navigator.standalone != undefined) {
-    window.addEventListener("touchstart",
-    function() {
+    window.addEventListener("touchstart", function() {
         hideAddressBar()
-    },
-    true);
-    window.addEventListener("orientationchange",
-    function() {
+    }, true);
+    window.addEventListener("orientationchange", function() {
         orientationchangeNotice()
-    },
-    true);
-    window.addEventListener("resize",
-    function() {
+    }, true);
+    window.addEventListener("resize", function() {
         checkFullScreen()
-    },
-    true)
+    }, true)
 }
 document.addEventListener("touchmove", preventTouchMove, false);
 var ScriptQueue = {
@@ -71,9 +66,9 @@ var ScriptQueue = {
     Load: function() {
         if (!this.Loading && this.TaskQueue.length) {
             var F = document.getElementsByTagName("BODY")[0];
-            var H = this,
-            G = this.TaskQueue.shift(),
-            E = document.createElement("script");
+            var H = this
+              , G = this.TaskQueue.shift()
+              , E = document.createElement("script");
             this.Loading = true;
             E.onload = E.onreadystatechange = function() {
                 if (E && E.readyState && E.readyState != "loaded" && E.readyState != "complete") {
@@ -90,14 +85,15 @@ var ScriptQueue = {
                 B.html(A);
                 B = null;
                 A = null
-            };
+            }
+            ;
             E.charset = "UTF-8";
             E.src = G.src;
             F.appendChild(E)
         }
     },
     AddTask: function(E, F) {
-        var D = isPhonegap == true ? "?t=" + loadRandomNum: "";
+        var D = isPhonegap == true ? "?t=" + loadRandomNum : "";
         this.TaskQueue.push({
             "src": E + D,
             "CallBackMethod": F
@@ -165,7 +161,7 @@ var init = function() {
     $("#initloading").find(".longtimetips").show();
     try {
         localStorage["test"] = "1"
-    } catch(b) {
+    } catch (b) {
         initmsg(lang("private_msg"));
         return false
     }
@@ -240,14 +236,12 @@ var init = function() {
         if (typeof cordova == "undefined") {
             c()
         } else {
-            window.requestFileSystem(LocalFileSystem.PERSISTENT, 0,
-            function(B) {
+            window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, function(B) {
                 appFileSystem = B;
                 cached_path = appFileSystem.root.fullPath.replace("Documents", "");
                 file_index = 0;
                 A()
-            },
-            function() {
+            }, function() {
                 stopLoadingAnim == true;
                 initmsg(lang("update_resource_msg"))
             })
@@ -296,11 +290,10 @@ var init = function() {
                 if (isPhonegap == false) {
                     A = staticUrl + "./tmpl.html"
                 } else {
-                    A = client_version == server_version ? staticUrl + "./tmpl.html": "http://img2.hanjiangsanguo.com/h5cdn/index.php?lang=" + appLanguage + "&name=" + encodeURIComponent(server_version + "/tmpl.html")
+                    A = client_version == server_version ? staticUrl + "./tmpl.html" : "http://img2.hanjiangsanguo.com/h5cdn/index.php?lang=" + appLanguage + "&name=" + encodeURIComponent(server_version + "/tmpl.html")
                 }
             }
-            R(A,
-            function(B) {
+            R(A, function(B) {
                 if (isPhonegap == true || !_inArray(["h5", "pc"], Platform.id)) {
                     localStorage["sg_tmpl_v" + client_version] = B
                 }
@@ -351,8 +344,7 @@ var init = function() {
         }
         e.css("width", "10px").animate({
             "width": "464px",
-        },
-        A(100, 1000), "ease", V);
+        }, A(100, 1000), "ease", V);
         function A(B, C) {
             var E = C - B;
             var D = Math.random();
@@ -395,39 +387,32 @@ var init = function() {
     function d(F, A, H) {
         file_index++;
         var E = "sg_cache/" + F;
-        appFileSystem.root.getFile(E, null,
-        function(I) {
+        appFileSystem.root.getFile(E, null, function(I) {
             I.remove(function() {
                 appFileSystem.root.getDirectory("sg_cache", {
                     create: true
-                },
-                G, D)
+                }, G, D)
             })
-        },
-        function() {
+        }, function() {
             appFileSystem.root.getDirectory("sg_cache", {
                 create: true
-            },
-            G, D)
+            }, G, D)
         });
         function G(I) {
             var J = new FileTransfer();
             var K = I.fullPath + "/" + F;
-            J.download(A, K,
-            function(L) {
+            J.download(A, K, function(L) {
                 if (F.indexOf(".css") == -1) {
                     H()
                 } else {
                     C()
                 }
-            },
-            D)
+            }, D)
         }
         function C() {
             appFileSystem.root.getFile(E, {
                 create: true
-            },
-            function(J) {
+            }, function(J) {
                 var I = new FileReader();
                 I.onloadend = function(K) {
                     var L = K.target.result.replace(/..\/img\/plugin\//g, cached_path + "Documents/sg_cache/");
@@ -435,31 +420,29 @@ var init = function() {
                     J.remove(function() {
                         B(L)
                     })
-                };
+                }
+                ;
                 I.readAsText(J)
-            },
-            D)
+            }, D)
         }
         function B(I) {
             appFileSystem.root.getFile(E, {
                 create: true
-            },
-            function(J) {
+            }, function(J) {
                 J.createWriter(function(K) {
-                    K.onwrite = function() {};
+                    K.onwrite = function() {}
+                    ;
                     K.seek(K.length);
                     K.write(I);
                     H()
                 })
-            },
-            D)
+            }, D)
         }
         function D(I) {
             console.log("ERROR");
             console.log(JSON.stringify(I));
             stopLoadingAnim == true;
-            initmsg(lang("update_resource_msg"),
-            function() {
+            initmsg(lang("update_resource_msg"), function() {
                 cleanGameCache()
             })
         }
@@ -472,28 +455,32 @@ var init91 = function() {
         }
         Platform.userinfo = B;
         init()
-    };
+    }
+    ;
     window.plugins.NdComPlatformPlugin.loginFail = function(B) {
         Platform.userinfo = null;
         if (typeof timer != "undefined" && timer != null) {
             timer.paused = true
         }
         initmsg("您登录失败或失去登录状态，请重新登录！")
-    };
+    }
+    ;
     window.plugins.NdComPlatformPlugin.exitPlatform = function() {
         if (Platform.userinfo == null) {
             window.location.reload()
         }
-    };
-    window.plugins.NdComPlatformPlugin.sessionInvaild = function(B) {};
+    }
+    ;
+    window.plugins.NdComPlatformPlugin.sessionInvaild = function(B) {}
+    ;
     window.plugins.NdComPlatformPlugin.purchaseResult = function() {
         if (typeof player != "undefined" && player.info.uid > 0) {
             setTimeout(function() {
                 player.reloadInfo()
-            },
-            1000)
+            }, 1000)
         }
-    };
+    }
+    ;
     if (sessionStorage["checkupdated"]) {
         window.plugins.NdComPlatformPlugin.ndLogin(null, null, [])
     } else {
@@ -513,27 +500,30 @@ var initPP = function() {
         } else {
             initmsg("您登录失败或失去登录状态，请重新登录！")
         }
-    };
+    }
+    ;
     window.plugins.PPComPlatformPlugin.loginFail = function() {
         Platform.userinfo = null;
         if (typeof timer != "undefined" && timer != null) {
             timer.paused = true
         }
         initmsg("您登录失败或失去登录状态，请重新登录！")
-    };
+    }
+    ;
     window.plugins.PPComPlatformPlugin.purchaseResult = function() {
         if (typeof player != "undefined" && player.info.uid > 0) {
             setTimeout(function() {
                 player.reloadInfo()
-            },
-            1000)
+            }, 1000)
         }
-    };
+    }
+    ;
     window.plugins.PPComPlatformPlugin.ppRefresh = function() {
         if (typeof player != "undefined" && player.info.uid > 0) {
             player.reloadInfo()
         }
-    };
+    }
+    ;
     window.plugins.PPComPlatformPlugin.ppLogin(null, null, [])
 };
 if (Platform.id == "91") {
@@ -561,8 +551,7 @@ function initmsg(E, F) {
     if (D.css("display") != "none") {
         return false
     } else {
-        D.find("#initmsg_btn").unbind("click").bind("click",
-        function() {
+        D.find("#initmsg_btn").unbind("click").bind("click", function() {
             D.hide();
             D = null;
             if (typeof timer != "undefined") {
@@ -579,8 +568,7 @@ function initmsg(E, F) {
             window.location.reload();
             setTimeout(function() {
                 window.location.reload()
-            },
-            1500)
+            }, 1500)
         });
         D.show()
     }
@@ -708,26 +696,21 @@ function cleanGameCache() {
         localStorage["sg_version" + client_version] = "";
         location.reload()
     } else {
-        window.requestFileSystem(LocalFileSystem.PERSISTENT, 0,
-        function(B) {
+        window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, function(B) {
             appFileSystem = B;
             appFileSystem.root.getDirectory("sg_cache", {
                 create: false
-            },
-            function(A) {
+            }, function(A) {
                 A.removeRecursively(function() {
                     localStorage["sg_version" + client_version] = "";
                     location.reload()
-                },
-                function() {
+                }, function() {
                     location.reload()
                 })
-            },
-            function() {
+            }, function() {
                 location.reload()
             })
-        },
-        function() {
+        }, function() {
             location.reload()
         })
     }
@@ -736,4 +719,5 @@ function preventTouchMove(B) {
     B.preventDefault();
     B.stopPropagation();
     return false
-};
+}
+;

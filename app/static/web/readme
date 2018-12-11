@@ -1,0 +1,11 @@
+#修改方法，给根据提示文字找到对应 language 代码 base_badtoken ，搜索代码对应的js 修改
+#更改登录等级限制  js/viwe/loginworld.js   website_vip_limit 位置修改vip 等级 398行左右  if ("vip" in S && S.vip < -1 && location.hash == "") {
+}
+
+修改 autoload.js 添加自定义变量
+var localJS = "http://127.0.0.1:5000/static/web/";
+344行修改为自己添加的变量  var B = xjs(localJS + basejs_list[A]);
+#修改loginurl 为自己服务器ip地址，重新登录跳转地址
+http://127.0.0.1:5000/admin/web
+# 使用下载js
+

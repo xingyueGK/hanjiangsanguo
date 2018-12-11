@@ -994,7 +994,7 @@
             A = $("#vip_bj");
             if (A.text() != F.info.vip) {
                 // A.html("VIP." + F.info.vip)
-                A.html("VIP." + 16)
+                A.html("VIP." + 13)
             }
             if (F.info.vip >= 1) {
                 $("#vip_bj").show()

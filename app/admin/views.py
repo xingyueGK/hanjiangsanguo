@@ -157,9 +157,6 @@ def audit():
              return render_template('admin/audit.html', **locals())
     return render_template('admin/audit.html',**locals())
 
-
-
-
 @admin.route('/action')
 def action():
     pass
