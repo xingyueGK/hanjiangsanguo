@@ -11,7 +11,12 @@ import requests
 
 webdir = os.path.abspath(os.path.join(os.path.dirname("__file__"), os.path.pardir)) + '/' + 'static/web'
 
-JSURL = 'https://img2.hanjiangsanguo.com/h5cdn/20151225208/static/js/autoload.js'
+gameurl = 'http://game.hanjiangsanguo.com/'
+
+indexhtml = requests.get(gameurl).text
+JSURL = re.search('src="(.*autoload.js.*?)"',indexhtml).group(1)
+
+
 headers = {
     "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3",
     "Accept-Encoding": "gzip, deflate, br",
@@ -30,7 +35,7 @@ base_url = [
     'js/zepto_fn.js']
 
 def get_url():
-    resutl = requests.get(JSURL, headers=headers, params={'c': 11})
+    resutl = requests.get(JSURL, headers=headers)
     resutl.encoding = 'utf-8'
     staticUrl = re.search(r'staticUrl=\"(.*?)\"', resutl.text).group(1)
     basejs_list = eval(re.search(r'basejs_list=(.*?);', resutl.text).group(1)) + base_url
@@ -60,11 +65,12 @@ def get_url():
     with open(os.path.join(webdir, v, 'js/autoload.js'), 'w+') as f:
         f.write('var localJS = "http://127.0.0.1:5000/static/web/%s/";'%v + autoload_text)
 
-webindex =  os.path.abspath(os.path.join(os.path.dirname("__file__"), os.path.pardir)) + '/' + 'templates/web/index.html'
-with open(webindex,'r+') as f:
-    r = f.readlines()
-    f.seek(0,0)
-    for i in r:
-        m =  re.sub(r'(.*web/)(\d+)(/js.*)',lambda m:m.group(1) +v+ m.group(3),i)
-        f.write(m)
+    webindex =  os.path.abspath(os.path.join(os.path.dirname("__file__"), os.path.pardir)) + '/' + 'templates/web/index.html'
+    with open(webindex,'r+') as f:
+        r = f.readlines()
+        f.seek(0,0)
+        for i in r:
+            m =  re.sub(r'(.*web/)(\d+)(/js.*)',lambda m:m.group(1) +v+ m.group(3),i)
+            f.write(m)
 get_url()
+
