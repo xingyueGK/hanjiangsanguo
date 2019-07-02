@@ -1,7 +1,7 @@
 var isdebug = false;
 var islocal = false;
 var isPhonegap = typeof cordova != "undefined";
-var staticUrl = "http://img2.hanjiangsanguo.com/h5cdn/20151225169/static/";
+var staticUrl = "http://img2.hanjiangsanguo.com/h5cdn/20151225172/static/";
 var localJS = "http://127.0.0.1:5000/static/web/";
 var UCAPI = "http://uc.game.hanjiangsanguo.com/index.php?";
 var client_version = 20151225169;

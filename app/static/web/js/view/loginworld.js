@@ -1,22 +1,19 @@
 if ($.os.iphone == true && $.os.version >= "9.0") {
-    $("#viewport").attr({
-        "content": "width=1136,user-scalable=no"
-    });
+    $("#viewport").attr({"content": "width=1136,user-scalable=no"});
     $("body").css("width", 1136);
     $("body").css("height", 900);
     window.scrollTo(0, 1);
     $("body").css("height", 640)
 }
 if ($.os.ipad == true && $.os.version >= "9.0") {
-    $("#viewport").attr({
-        "content": "width=2048,user-scalable=no"
-    });
+    $("#viewport").attr({"content": "width=2048,user-scalable=no"});
     $("body").css("width", 1024);
     $("body").css("height", 2000);
     window.scrollTo(0, 1);
     $("body").css("height", 768)
-} (function() {
-    loginWorldClass = function() {
+}
+(function () {
+    loginWorldClass = function () {
         this.username = "";
         this.password = "";
         this.nickname = "";
@@ -26,7 +23,7 @@ if ($.os.ipad == true && $.os.version >= "9.0") {
         this.myScroller = null
     };
     loginWorldClass.prototype = {
-        init: function(A) {
+        init: function (A) {
             $("#world").append($.template("loginworld_tmpl"));
             $("#worldloading").hide();
             $("#version").html("ver: " + localStorage.getItem("sg_ver") + "[" + channelID + "]");
@@ -49,14 +46,12 @@ if ($.os.ipad == true && $.os.version >= "9.0") {
                     }
                 }
             }
-            setTimeout(function() {
+            setTimeout(function () {
                 if (gAudio) {
                     gAudio.playbgm("city_bgm")
                 }
-            },
-            800)
-        },
-        checkFirstTime: function() {
+            }, 800)
+        }, checkFirstTime: function () {
             var B = xGame.xsGet("lastaccountsaved");
             if (B == null) {
                 var A = xGame.xsGet("oldman");
@@ -65,67 +60,52 @@ if ($.os.ipad == true && $.os.version >= "9.0") {
                 }
             }
             return false
-        },
-        passFirstTime: function() {
+        }, passFirstTime: function () {
             xGame.xsSet("oldman", "solo")
-        },
-        viewPop: function(A) {
-            $("#loginworld_page").attr({
-                "class": "show_" + A
-            })
-        },
-        loginRender: function() {
+        }, viewPop: function (A) {
+            $("#loginworld_page").attr({"class": "show_" + A})
+        }, loginRender: function () {
             var A = this;
             A.viewPop("login_wrap");
             var C = $("#login_wrap");
-            C.find("#acountlist_btn").unbind("click").bind("click",
-            function() {
+            C.find("#acountlist_btn").unbind("click").bind("click", function () {
                 $("#acountlist_wrap").toggle();
-                $("#loginworld_page").one("touchend",
-                function(D) {
+                $("#loginworld_page").one("touchend", function (D) {
                     if (D.target.id == "acountlist_btn" || D.target.className == "d_btn") {
                         return false
                     }
                     $("#acountlist_wrap").css("display", "none")
                 })
             });
-            C.find(".regbtn").unbind("touchend").bind("touchend",
-            function(D) {
+            C.find(".regbtn").unbind("touchend").bind("touchend", function (D) {
                 loginWorld.regRender();
                 D.preventDefault();
                 D.stopPropagation()
             });
             if (navigator && navigator.userAgent && navigator.userAgent.indexOf("5_0_1") != -1) {
-                C.find(".try_btn").unbind("touchend").bind("touchend",
-                function(D) {
-                    xGame.confirm.show(lang("help"), lang("keft_qq"), 1,
-                    function() {
+                C.find(".try_btn").unbind("touchend").bind("touchend", function (D) {
+                    xGame.confirm.show(lang("help"), lang("keft_qq"), 1, function () {
                         xGame.confirm.hide()
                     });
                     D.preventDefault();
                     D.stopPropagation()
                 }).html(lang("help"))
             } else {
-                C.find(".try_btn").unbind("touchend").bind("touchend",
-                function(D) {
+                C.find(".try_btn").unbind("touchend").bind("touchend", function (D) {
                     D.preventDefault();
                     D.stopPropagation();
-                    xGame.confirm.show(lang("quick_start_title"), lang("quick_start_content"), 1,
-                    function() {
+                    xGame.confirm.show(lang("quick_start_title"), lang("quick_start_content"), 1, function () {
                         if (xGame.checkLock()) {
                             return false
                         }
-                        setTimeout(function() {
+                        setTimeout(function () {
                             loginWorld.tryRender();
                             xGame.confirm.hide()
-                        },
-                        350)
-                    },
-                    null, lang("quick_start_go_game"), null, true)
+                        }, 350)
+                    }, null, lang("quick_start_go_game"), null, true)
                 })
             }
-            C.find(".loginsubmitbtn").unbind("touchend").bind("touchend",
-            function(D) {
+            C.find(".loginsubmitbtn").unbind("touchend").bind("touchend", function (D) {
                 D.preventDefault();
                 D.stopPropagation();
                 if (xGame.checkLock()) {
@@ -138,21 +118,24 @@ if ($.os.ipad == true && $.os.version >= "9.0") {
                     xGame.unlock();
                     return false
                 }
-                var E = function(F) {
+                var E = function (F) {
                     if (F.status == 1) {
                         loginWorld.serverlistRender(F);
                         xGame.saveAccount(loginWorld.username, loginWorld.password)
                     } else {
                         switch (F.status) {
-                        case - 1 : xGame.toast.show(lang("member_not_exist"));
-                            break;
-                        case - 2 : xGame.toast.show(lang("account_psw_error"));
-                            break;
-                        case - 3 : xGame.toast.show(lang("account_pwd_no_null"));
-                            break;
-                        default:
-                            xGame.toast.show(lang("undefined_error"));
-                            break
+                            case -1:
+                                xGame.toast.show(lang("member_not_exist"));
+                                break;
+                            case -2:
+                                xGame.toast.show(lang("account_psw_error"));
+                                break;
+                            case -3:
+                                xGame.toast.show(lang("account_pwd_no_null"));
+                                break;
+                            default:
+                                xGame.toast.show(lang("undefined_error"));
+                                break
                         }
                     }
                     xGame.unlock()
@@ -164,8 +147,7 @@ if ($.os.ipad == true && $.os.version >= "9.0") {
                     "adid": xGame.adid,
                     "devicetoken": xGame.devicetoken,
                     "channel": channelID
-                },
-                E, false, loginWorld.tempLoginFail)
+                }, E, false, loginWorld.tempLoginFail)
             });
             var B = xGame.xsGet("lastaccountsaved");
             if (B != null && B != "") {
@@ -181,29 +163,25 @@ if ($.os.ipad == true && $.os.version >= "9.0") {
             }
             C = null;
             A = null
-        },
-        regRender: function() {
+        }, regRender: function () {
             var A = this;
             A.viewPop("reg_wrap");
             var B = $("#reg_wrap");
-            B.find(".input").addClass("greyword").one("focus",
-            function() {
+            B.find(".input").addClass("greyword").one("focus", function () {
                 $(this).removeClass("greyword").val("")
             });
-            B.find(".close_btn").unbind("touchend").bind("touchend",
-            function(C) {
+            B.find(".close_btn").unbind("touchend").bind("touchend", function (C) {
                 loginWorld.loginRender();
                 C.preventDefault();
                 C.stopPropagation()
             });
-            B.find(".regsubmitbtn").unbind("touchend").bind("touchend",
-            function(C) {
+            B.find(".regsubmitbtn").unbind("touchend").bind("touchend", function (C) {
                 C.preventDefault();
                 C.stopPropagation();
                 if (xGame.checkLock()) {
                     return false
                 }
-                var D = function(E) {
+                var D = function (E) {
                     if (E.status == 1) {
                         xGame.saveAccount(loginWorld.username, loginWorld.password);
                         loginWorld.serverlistRender(E, loginWorld.checkFirstTime());
@@ -254,16 +232,14 @@ if ($.os.ipad == true && $.os.version >= "9.0") {
                         "devicetoken": xGame.devicetoken,
                         "channel": channelID,
                         "32d7d8f515a95064d2d36ce16330a846": "c5e55009d72507b33ba7beecbf680550"
-                    },
-                    D)
+                    }, D)
                 } else {
                     xGame.unlock()
                 }
             });
             B = null;
             A = null
-        },
-        serverlistRender: function(D, N) {
+        }, serverlistRender: function (D, N) {
             var H = this;
             xGame.xsSet("login_servers_data", JSON.stringify(D), true);
             var P = $("#serverlist_wrap");
@@ -314,7 +290,7 @@ if ($.os.ipad == true && $.os.version >= "9.0") {
                     xGame.API = "http://" + xGame.server_prefix + ".game." + xGame.server_domain + "/index.php?v=" + localStorage["sg_ver"];
                     xGame.xsSet("addr", C.addr);
                     xGame.xsSet("server_name", C.name);
-                    var B = function(Q) {
+                    var B = function (Q) {
                         xGame.unlock();
                         if (Q.status == 1) {
                             loginWorld.logindoneRender(Q.token);
@@ -325,8 +301,8 @@ if ($.os.ipad == true && $.os.version >= "9.0") {
                             } else {
                                 xGame.toast.show(lang("undefined_error"))
                             }
-                            setTimeout(function() {},
-                            2000)
+                            setTimeout(function () {
+                            }, 2000)
                         }
                     };
                     if (xGame.xsExist("tryuid")) {
@@ -338,8 +314,7 @@ if ($.os.ipad == true && $.os.version >= "9.0") {
                             "devicetoken": xGame.devicetoken,
                             "uid": xGame.xsGet("tryuid"),
                             "channel": channelID
-                        },
-                        B, false, loginWorld.tempLoginFail)
+                        }, B, false, loginWorld.tempLoginFail)
                     } else {
                         loadContents({
                             "c": "login",
@@ -350,8 +325,7 @@ if ($.os.ipad == true && $.os.version >= "9.0") {
                             "u": loginWorld.username,
                             "p": loginWorld.password,
                             "channel": channelID
-                        },
-                        B, false, loginWorld.tempLoginFail)
+                        }, B, false, loginWorld.tempLoginFail)
                     }
                     return
                 }
@@ -361,12 +335,12 @@ if ($.os.ipad == true && $.os.version >= "9.0") {
                     O += '<div class="lastlogin_wrap">' + lang("no") + "</div>"
                 }
                 E = A = null;
-                var M = function() {
+                var M = function () {
                     xGame.toast.show($(this).attr("msg"));
                     return false
                 };
                 P.find(".serverlist").undelegate(".server_preview", "click").delegate(".server_preview", "click", M);
-                var F = function() {
+                var F = function () {
                     if (xGame.checkLock()) {
                         return false
                     }
@@ -375,8 +349,7 @@ if ($.os.ipad == true && $.os.version >= "9.0") {
                         return
                     }
                     if ($(this).attr("status") == 3) {
-                        xGame.confirm.show(lang("maintenance_tips"), $(this).attr("msg"), 1,
-                        function() {
+                        xGame.confirm.show(lang("maintenance_tips"), $(this).attr("msg"), 1, function () {
                             xGame.confirm.hide();
                             xGame.unlock();
                             window.location.reload()
@@ -389,15 +362,12 @@ if ($.os.ipad == true && $.os.version >= "9.0") {
                     xGame.API = "http://" + xGame.server_prefix + ".game." + xGame.server_domain + "/index.php?v=" + localStorage["sg_ver"];
                     xGame.xsSet("addr", R);
                     xGame.xsSet("server_name", $(this).attr("name"));
-                    var Q = function(S) {
+                    var Q = function (S) {
                         xGame.unlock();
                         if (S.status == 1) {
                             if (Platform.id == "pc") {
-                                //vip登录限制
-                                // if ("vip" in S && S.vip < 5 && location.hash == "") {
                                 if ("vip" in S && S.vip < -1 && location.hash == "") {
-                                    xGame.confirm.show(lang("notice"), lang("website_vip_limit"), 1,
-                                    function() {
+                                    xGame.confirm.show(lang("notice"), lang("website_vip_limit"), 1, function () {
                                         xGame.confirm.hide()
                                     });
                                     return
@@ -435,8 +405,7 @@ if ($.os.ipad == true && $.os.version >= "9.0") {
                             "adid": xGame.adid,
                             "devicetoken": xGame.devicetoken,
                             "channel": channelID
-                        },
-                        Q, false, loginWorld.tempLoginFail)
+                        }, Q, false, loginWorld.tempLoginFail)
                     } else {
                         if (Platform.id == "pp") {
                             loadContents({
@@ -448,8 +417,7 @@ if ($.os.ipad == true && $.os.version >= "9.0") {
                                 "adid": xGame.adid,
                                 "devicetoken": xGame.devicetoken,
                                 "channel": channelID
-                            },
-                            Q, false, loginWorld.tempLoginFail)
+                            }, Q, false, loginWorld.tempLoginFail)
                         } else {
                             if (Platform.id == "dj") {
                                 loadContents({
@@ -461,8 +429,7 @@ if ($.os.ipad == true && $.os.version >= "9.0") {
                                     "adid": xGame.adid,
                                     "devicetoken": xGame.devicetoken,
                                     "channel": channelID
-                                },
-                                Q, false, loginWorld.tempLoginFail)
+                                }, Q, false, loginWorld.tempLoginFail)
                             } else {
                                 if (xGame.xsExist("tryuid")) {
                                     loadContents({
@@ -473,8 +440,7 @@ if ($.os.ipad == true && $.os.version >= "9.0") {
                                         "adid": xGame.adid,
                                         "uid": xGame.xsGet("tryuid"),
                                         "channel": channelID
-                                    },
-                                    Q, false, loginWorld.tempLoginFail)
+                                    }, Q, false, loginWorld.tempLoginFail)
                                 } else {
                                     loadContents({
                                         "c": "login",
@@ -485,8 +451,7 @@ if ($.os.ipad == true && $.os.version >= "9.0") {
                                         "u": loginWorld.username,
                                         "p": loginWorld.password,
                                         "channel": channelID
-                                    },
-                                    Q, false, loginWorld.tempLoginFail)
+                                    }, Q, false, loginWorld.tempLoginFail)
                                 }
                             }
                         }
@@ -508,10 +473,9 @@ if ($.os.ipad == true && $.os.version >= "9.0") {
                         hScrollbar: false,
                         vScrollbar: true
                     });
-                    setTimeout(function() {
+                    setTimeout(function () {
                         H.myScroller.refresh()
-                    },
-                    300)
+                    }, 300)
                 }
                 F = null;
                 L = null;
@@ -521,12 +485,11 @@ if ($.os.ipad == true && $.os.version >= "9.0") {
             } else {
                 xGame.toast.show(lang("server_closing"))
             }
-        },
-        logindoneRender: function(A) {
+        }, logindoneRender: function (A) {
             guide.createFullmask();
             xGame.xsSet("token", A);
             xGame.initLogin();
-            var B = function() {
+            var B = function () {
                 guide.cleanFullmask();
                 if (player.info.uid == 0) {
                     xGame.toast.show(lang("get_user_info_fail"));
@@ -539,11 +502,11 @@ if ($.os.ipad == true && $.os.version >= "9.0") {
                 if (player.info.gender == 0) {
                     xGame.loadWorld("role")
                 } else {
-                    var C = function() {
+                    var C = function () {
                         xGame.xsRemove("serverlist", true);
                         xGame.checkMenuOpen();
                         if (player.info.level && player.info.level >= 20) {
-                            checkLaterUpdate(function() {
+                            checkLaterUpdate(function () {
                                 xGame.loadWorld("city")
                             })
                         } else {
@@ -566,9 +529,8 @@ if ($.os.ipad == true && $.os.version >= "9.0") {
                 B = null
             };
             player.reloadInfo(B, false)
-        },
-        showMar: function(A) {
-            var B = function(D) {
+        }, showMar: function (A) {
+            var B = function (D) {
                 if (parseInt(D.status) == 1 && D.king.chapter != null) {
                     $("#loginworld_page").hide();
                     var C = xGame.loadPopTmpl("showmar");
@@ -578,8 +540,7 @@ if ($.os.ipad == true && $.os.version >= "9.0") {
                     E.find(".player_name").html(D.king.nickname);
                     E.find(".server_name").html("(" + D.king.servername + ")");
                     E = null;
-                    C.find(".bar").unbind().bind("webkitAnimationEnd",
-                    function(F) {
+                    C.find(".bar").unbind().bind("webkitAnimationEnd", function (F) {
                         $(this).unbind();
                         C.remove();
                         C = null;
@@ -589,14 +550,9 @@ if ($.os.ipad == true && $.os.version >= "9.0") {
                     A()
                 }
             };
-            loadContents({
-                "c": "god",
-                "m": "loading"
-            },
-            B, false, A)
-        },
-        tryRender: function() {
-            var A = function(B) {
+            loadContents({"c": "god", "m": "loading"}, B, false, A)
+        }, tryRender: function () {
+            var A = function (B) {
                 xGame.unlock();
                 if (B.status == 1) {
                     xGame.xsSet("tryuid", B.uid);
@@ -617,11 +573,9 @@ if ($.os.ipad == true && $.os.version >= "9.0") {
                 "devicetoken": xGame.devicetoken,
                 "channel": channelID,
                 "32d7d8f515a95064d2d36ce16330a846": "c5e55009d72507b33ba7beecbf680550"
-            },
-            A, false, loginWorld.tempLoginFail);
+            }, A, false, loginWorld.tempLoginFail);
             A = null
-        },
-        initAcountList: function() {
+        }, initAcountList: function () {
             $("#acountlist_wrap").remove();
             var D = xGame.xsGet("acountlist");
             if (D) {
@@ -633,8 +587,7 @@ if ($.os.ipad == true && $.os.version >= "9.0") {
                 }
                 A += "</ul>";
                 var C = $(A);
-                C.undelegate("span", "touchend").delegate("span", "touchend",
-                function(E) {
+                C.undelegate("span", "touchend").delegate("span", "touchend", function (E) {
                     var G = $(this).parent().attr("u");
                     var F = $(this).parent().attr("p");
                     var H = $("#login_wrap");
@@ -645,8 +598,7 @@ if ($.os.ipad == true && $.os.version >= "9.0") {
                     E.preventDefault();
                     E.stopPropagation()
                 });
-                C.undelegate("button", "touchend").delegate("button", "touchend",
-                function(E) {
+                C.undelegate("button", "touchend").delegate("button", "touchend", function (E) {
                     var F = $(this).parent().attr("k");
                     loginWorld.deleteAcount(F);
                     E.preventDefault();
@@ -658,29 +610,25 @@ if ($.os.ipad == true && $.os.version >= "9.0") {
                 A += "<li><span>" + lang("you_have_not_save_account") + "</span></li>";
                 A += "</ul>";
                 var C = $(A);
-                C.unbind("touchend").bind("touchend",
-                function() {
+                C.unbind("touchend").bind("touchend", function () {
                     $("#acountlist_wrap").hide()
                 })
             }
             $("#login_wrap").find(".real_wrap").append(C);
             C = null;
-            $("#loginworld_page").unbind("touchend").bind("touchend",
-            function(E) {
+            $("#loginworld_page").unbind("touchend").bind("touchend", function (E) {
                 if (E.target && E.target.id == "loginworld_page") {
                     $("#acountlist_wrap").hide()
                 }
             })
-        },
-        deleteAcount: function(A) {
+        }, deleteAcount: function (A) {
             if (A && this.acountlist) {
                 this.acountlist.splice(parseInt(A), 1);
                 xGame.xsSet("acountlist", JSON.stringify(this.acountlist));
                 $("#acount" + A).remove()
             }
-        },
-        login91Acount: function() {
-            var A = function(B) {
+        }, login91Acount: function () {
+            var A = function (B) {
                 xGame.unlock();
                 if (B.status == 1) {
                     loginWorld.serverlistRender(B)
@@ -696,15 +644,12 @@ if ($.os.ipad == true && $.os.version >= "9.0") {
                 "adid": xGame.adid,
                 "devicetoken": xGame.devicetoken,
                 "channel": channelID
-            },
-            A, false, loginWorld.tempLoginFail);
+            }, A, false, loginWorld.tempLoginFail);
             A = null
-        },
-        loginPPAcount: function() {
+        }, loginPPAcount: function () {
             this.serverlistRender(Platform.userinfo)
-        },
-        loginDJAcount: function() {
-            var A = function(B) {
+        }, loginDJAcount: function () {
+            var A = function (B) {
                 xGame.unlock();
                 if (B.status == 1) {
                     loginWorld.serverlistRender(B)
@@ -720,11 +665,9 @@ if ($.os.ipad == true && $.os.version >= "9.0") {
                 "adid": xGame.adid,
                 "devicetoken": xGame.devicetoken,
                 "channel": channelID
-            },
-            A, false, loginWorld.tempLoginFail);
+            }, A, false, loginWorld.tempLoginFail);
             A = null
-        },
-        fireStart: function() {
+        }, fireStart: function () {
             if (this.movieclip != null) {
                 return false
             }
@@ -742,85 +685,34 @@ if ($.os.ipad == true && $.os.version >= "9.0") {
                 "y": E,
                 "loop": true,
                 "zindex": "1",
-                "frames": [{
-                    rect: [0, 0],
-                    interval: 40
-                },
-                {
-                    rect: [180, 0],
-                    interval: 40
-                },
-                {
+                "frames": [{rect: [0, 0], interval: 40}, {rect: [180, 0], interval: 40}, {
                     rect: [360, 0],
                     interval: 40
-                },
-                {
-                    rect: [540, 0],
-                    interval: 40
-                },
-                {
-                    rect: [720, 0],
-                    interval: 40
-                },
-                {
+                }, {rect: [540, 0], interval: 40}, {rect: [720, 0], interval: 40}, {
                     rect: [0, 180],
                     interval: 40
-                },
-                {
-                    rect: [180, 180],
-                    interval: 40
-                },
-                {
-                    rect: [360, 180],
-                    interval: 40
-                },
-                {
+                }, {rect: [180, 180], interval: 40}, {rect: [360, 180], interval: 40}, {
                     rect: [540, 180],
                     interval: 40
-                },
-                {
-                    rect: [720, 180],
-                    interval: 40
-                },
-                {
-                    rect: [0, 360],
-                    interval: 40
-                },
-                {
+                }, {rect: [720, 180], interval: 40}, {rect: [0, 360], interval: 40}, {
                     rect: [180, 360],
                     interval: 40
-                },
-                {
-                    rect: [360, 360],
-                    interval: 40
-                },
-                {
-                    rect: [540, 360],
-                    interval: 40
-                },
-                {
+                }, {rect: [360, 360], interval: 40}, {rect: [540, 360], interval: 40}, {
                     rect: [720, 360],
                     interval: 40
-                },
-                {
-                    rect: [900, 540],
-                    interval: 700
-                }]
+                }, {rect: [900, 540], interval: 700}]
             });
             this.movieclip.appendTo(B);
             this.movieclip.play();
             B = null
-        },
-        fireEnd: function() {
+        }, fireEnd: function () {
             if (this.movieclip != null) {
                 this.movieclip.destory();
                 this.movieclip = null
             }
-        },
-        tempLoginFail: function() {
+        }, tempLoginFail: function () {
             initmsg(loadLangObj["protect_msg2"])
-        },
-        clear: function() {
+        }, clear: function () {
             if (this.myScroller) {
                 this.myScroller.destroy();
                 this.myScroller = null
